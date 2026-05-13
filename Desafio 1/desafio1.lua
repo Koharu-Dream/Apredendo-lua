@@ -1,10 +1,10 @@
 -- Configuração dos pinos
-local led_pin = 4  -- D4 (GPIO4)
-local botao_pin = 5 -- D5 (GPIO5)
+local led_pin = 5  -- D5 (GPIO4)
+local botao_pin = 1 -- D1 (GPIO5)
 
 -- Inicializa os pinos
 gpio.mode(led_pin, gpio.OUTPUT)
-gpio.mode(botao_pin, gpio.INPUT, gpio.PULLUP)
+gpio.mode(botao_pin, gpio.INPUT)
 
 -- Estado inicial do LED (desligado)
 gpio.write(led_pin, gpio.LOW)
@@ -30,4 +30,4 @@ end
 local timer = tmr.create()
 timer:alarm(50, tmr.ALARM_AUTO, verificar_botao)
 
-print("Sistema pronto! Pressione o botão no pino D5")
+print("Sistema pronto! Pressione o botão no pino D1")
