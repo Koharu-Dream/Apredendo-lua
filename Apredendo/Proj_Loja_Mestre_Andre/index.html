@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+* { margin:0; padding:0; box-sizing:border-box; }
+body {
+    background: #111;
+    color: white;
+    text-align: center;
+    font-family: Arial;
+    padding: 20px 10px;
+}
+h1 { font-size: 1.4rem; margin-bottom: 24px; letter-spacing: 2px; }
+.piano {
+    display: flex;
+    justify-content: center;
+    flex-wrap: nowrap;
+    gap: 4px;
+    padding: 20px 10px 28px;
+    background: #222;
+    border-radius: 12px;
+}
+button {
+    flex: 1;
+    min-width: 0;
+    height: 180px;
+    font-size: 0.85rem;
+    font-weight: bold;
+    border: none;
+    border-radius: 0 0 8px 8px;
+    cursor: pointer;
+    background: #f5f0e8;
+    color: #333;
+    box-shadow: 0 4px 0 #999;
+    -webkit-user-select: none;
+    user-select: none;
+}
+button:active {
+    transform: translateY(4px);
+    box-shadow: 0 1px 0 #999;
+    background: #ddd;
+}
+</style>
+</head>
+<body>
+<h1>Piano ESP8266</h1>
+<div class="piano">
+    <button data-nota="/do">DO</button>
+    <button data-nota="/re">RE</button>
+    <button data-nota="/mi">MI</button>
+    <button data-nota="/fa">FA</button>
+    <button data-nota="/sol">SOL</button>
+    <button data-nota="/la">LA</button>
+    <button data-nota="/si">SI</button>
+    <button data-nota="/do2">DO²</button>
+</div>
+<script>
+var xhr = new XMLHttpRequest();
+var pendente = null;
+var livre = true;
+
+function enviar(rota) {
+    if (!livre) {
+        pendente = rota;
+        return;
+    }
+    livre = false;
+    pendente = null;
+    xhr.open("GET", rota, true);
+    xhr.onreadystatechange = function() {
+        if (xhr.readyState === 4) {
+            livre = true;
+            if (pendente) enviar(pendente);
+        }
+    };
+    xhr.send();
+}
+
+document.querySelectorAll('button').forEach(function(btn) {
+    btn.addEventListener('touchstart', function(e) {
+        e.preventDefault();
+        enviar(btn.getAttribute('data-nota'));
+    });
+    btn.addEventListener('touchend', function(e) {
+        e.preventDefault();
+        enviar('/stop');
+    });
+});
+</script>
+</body>
+</html>
