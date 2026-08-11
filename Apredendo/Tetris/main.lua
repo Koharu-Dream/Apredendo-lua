@@ -124,12 +124,8 @@ function love.load()
     }
 
     -- Peça usada atualmente.
-    -- Mantive a mesma peça do seu código original.
 
-    peca = {
-        {0,1,0},
-        {0,1,1}
-    }
+    peca = pecas.Z.matriz
 
     altura, larguraEsquerda, larguraDireita = calcularDimensoes(peca)
 
@@ -141,10 +137,10 @@ end
 
 
 -- Verifica se a peça pode ficar em uma determinada posição.
---
+
 -- x = coluna inicial da peça
 -- y = linha inicial da peça
---
+
 -- Retorna true se puder colocar.
 -- Retorna false se sair do tabuleiro ou bater em outra peça.
 
@@ -236,20 +232,6 @@ function rotacionarPeca()
     local linhas = #peca
     local colunas = #peca[1]
 
-    -- A rotação de uma matriz funciona assim:
-    --
-    -- matriz original:
-    --
-    -- 1 0
-    -- 1 1
-    -- 0 1
-    --
-    -- vira:
-    --
-    -- 0 1 1
-    -- 1 1 0
-    --
-    -- Por isso as colunas antigas viram linhas novas.
 
     for i = 1, colunas do
 
@@ -261,13 +243,6 @@ function rotacionarPeca()
 
         end
     end
-
-
-    -- IMPORTANTE:
-    -- Ainda não mudamos a peça atual.
-    --
-    -- Primeiro testamos se a nova peça cabe.
-    -- Se não couber, simplesmente não rotacionamos.
 
     if podeColocarPeca(
         novaPeca,
@@ -286,12 +261,6 @@ function rotacionarPeca()
 
     -- Se não coube exatamente no lugar atual,
     -- tentamos pequenos deslocamentos.
-    --
-    -- Isso resolve casos como:
-    --
-    -- peça encostada na parede
-    -- peça perto do chão
-    -- peça perto de outra peça
 
     local tentativas = {
         { -1, 0 },
@@ -331,11 +300,6 @@ function rotacionarPeca()
             return
         end
     end
-
-    -- Se chegar aqui, nenhuma posição funcionou.
-    --
-    -- Então não fazemos nada.
-    -- A peça continua na posição e rotação anteriores.
 end
 
 
@@ -393,12 +357,6 @@ function pecaGravidade(dt)
 
             fixarPecaNoTabuleiro()
 
-
-            -- Nova posição para a próxima peça.
-            -- Como o seu código original ainda não escolhe
-            -- uma peça nova aleatoriamente, continuamos
-            -- usando a mesma matriz.
-
             pecaAtual.coordenadas.x = 3
             pecaAtual.coordenadas.y = 1
 
@@ -425,11 +383,6 @@ end
 
 
 function verificarLinhasCompletas()
-
-    -- Começamos de baixo para cima.
-    --
-    -- Isso é importante porque removemos linhas
-    -- durante o loop.
 
     for i = 20, 1, -1 do
 
